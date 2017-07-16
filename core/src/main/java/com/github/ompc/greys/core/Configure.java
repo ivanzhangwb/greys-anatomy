@@ -80,8 +80,7 @@ public class Configure {
      *
      * @return 序列化字符串
      */
-    @Override
-    public String toString() {
+    @Override public String toString() {
 
         final Map<String, String> map = new HashMap<String, String>();
         for (Field field : getFields(Configure.class)) {
@@ -104,20 +103,24 @@ public class Configure {
     }
 
     /**
-     * 反序列化字符串成对象
+     * 反序列化字符串成对象 (被范序列化调用)
+     * {@link com.github.ompc.greys.agent.AgentLauncher#main(java.lang.String, java.lang.instrument.Instrumentation)}
      *
-     * @param toString 序列化字符串
+     * @param toString
+     *         序列化字符串 . 传递给AgentJar的参数
+     *
      * @return 反序列化的对象
      */
     public static Configure toConfigure(String toString) {
         final Configure configure = new Configure();
+        // Items以;分隔，每一个item以=区分 key和value , 比如:
+        // a=b;c=d;e=f
         final Map<String, String> map = codec.toMap(toString);
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
             try {
                 final Field field = getField(Configure.class, entry.getKey());
-                if (null != field
-                        && !isStatic(field.getModifiers())) {
+                if (null != field && !isStatic(field.getModifiers())) {
                     setValue(field, valueOf(field.getType(), entry.getValue()), configure);
                 }
             } catch (Throwable t) {

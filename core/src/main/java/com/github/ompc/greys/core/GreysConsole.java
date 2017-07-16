@@ -44,6 +44,7 @@ public class GreysConsole {
     // 历史命令存储文件
     private static final String HISTORY_FILENAME = ".greys_history";
 
+    private String prompt="";
     private final ConsoleReader console;
     private final History history;
     private final Writer out;
@@ -201,6 +202,14 @@ public class GreysConsole {
 
                         final String line = console.readLine();
 
+                        if(line.toLowerCase().startsWith("prompt")){
+                            String newPrompt=line.substring(7);
+                            prompt=newPrompt;
+                            hackingForReDrawPrompt();
+                            console.setPrompt(newPrompt);
+                            console.redrawLine();
+                            continue;
+                        }
                         // 如果是\结尾，则说明还有下文，需要对换行做特殊处理
                         if (StringUtils.endsWith(line, "\\")) {
                             // 去掉结尾的\
@@ -266,7 +275,7 @@ public class GreysConsole {
                 }
                 if (c == EOT) {
                     hackingForReDrawPrompt();
-                    console.setPrompt(DEFAULT_PROMPT);
+                    console.setPrompt(prompt.equals("")?DEFAULT_PROMPT:prompt);
                     console.redrawLine();
                 } else {
                     out.write(c);

@@ -152,7 +152,7 @@ public class DefaultCommandHandler implements CommandHandler {
         final Printer printer = new Printer() {
 
             @Override
-            public Printer print(boolean isF, String message) {
+            public Printer print(boolean isEOF, String message) {
 
                 if(isFinishRef.get()) {
                     return this;
@@ -165,7 +165,7 @@ public class DefaultCommandHandler implements CommandHandler {
                     }
                 }
 
-                if (isF) {
+                if (isEOF) {
                     finish();
                 }
 
@@ -174,8 +174,8 @@ public class DefaultCommandHandler implements CommandHandler {
             }
 
             @Override
-            public Printer println(boolean isF, String message) {
-                return print(isF, message + "\n");
+            public Printer println(boolean isEOF, String message) {
+                return print(isEOF, message + "\n");
             }
 
             @Override
@@ -280,6 +280,7 @@ public class DefaultCommandHandler implements CommandHandler {
                     && session.isLocked()) {
 
                 // touch the session
+                // 会话保活
                 session.touch();
 
                 try {

@@ -32,6 +32,9 @@ public class SessionCommand implements Command {
     @NamedArg(name = "s", hasValue = true, summary = "Modify the silent of session")
     private Boolean silent;
 
+    @NamedArg(name="p", hasValue=true, summary = "Modify the prompt")
+    private String prompt;
+
     @Override
     public Action getAction() {
         return new RowAction() {
@@ -46,7 +49,6 @@ public class SessionCommand implements Command {
                         final Charset newCharset = Charset.forName(charsetString);
                         final Charset beforeCharset = session.getCharset();
                         session.setCharset(newCharset);
-
                         printer.println(format("Character setValue is modified. [%s] -> [%s]",
                                 beforeCharset,
                                 newCharset))
@@ -56,7 +58,15 @@ public class SessionCommand implements Command {
                         printer.println(format("Desupported character setValue : \"%s\"", charsetString)).finish();
                     }
 
-                } else {
+                }else if(isNotBlank(prompt)){
+                    String beforePrompt=session.prompt();
+                    session.setPrompt(prompt);
+                    printer.println(format("Prompt setValue is modified. [%s] -> [%s]",
+                            beforePrompt,
+                            prompt))
+                            .finish();
+                }
+                else {
                     printer.print(sessionToString(session)).finish();
                 }
 
@@ -69,7 +79,6 @@ public class SessionCommand implements Command {
                             session.isSilent()))
                             .finish();
                 }
-
                 return new RowAffect(1);
             }
 

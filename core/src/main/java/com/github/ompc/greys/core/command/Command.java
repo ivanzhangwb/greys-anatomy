@@ -23,10 +23,10 @@ public interface Command {
         /**
          * 发送信息
          *
-         * @param isF     是否结束打印
+         * @param isEOF     是否结束打印
          * @param message 发送信息内容
          */
-        Printer print(boolean isF, String message);
+        Printer print(boolean isEOF, String message);
 
         /**
          * 发送信息
@@ -38,10 +38,10 @@ public interface Command {
         /**
          * 换行发送信息
          *
-         * @param isF     是否结束打印
+         * @param isEOF     是否结束打印
          * @param message 发送信息内容
          */
-        Printer println(boolean isF, String message);
+        Printer println(boolean isEOF, String message);
 
         /**
          * 换行发送信息

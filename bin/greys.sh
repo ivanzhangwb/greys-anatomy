@@ -282,6 +282,7 @@ main()
         esac
     done
 
+    #shift 是去除$1,把$2变成$1
     shift $((OPTIND-1));
 
     if [[ ${OPTION_CHECK_PERMISSION} -eq 1 ]]; then
